@@ -43,3 +43,26 @@ sns.boxplot(x='Placement', y='IQ', data=df, palette='Set3')
 plt.title('IQ Distribution by Placement Status')
 plt.savefig('boxplot_iq.png')
 plt.show()
+
+
+# Feature Engineering & Feature Selection
+
+# Feature Selection: with only 2 variables ('IQ', 'CGPA'), we don't need to drop any.
+# Feature Engineering: We will standardize these numerical features as they have different scales.
+
+X = df.drop(columns=['Placement'])
+y = df['Placement']
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+# Splitting Data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Feature Scaling
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+print(f"Shapes post-splitting - X_train: {X_train.shape}, X_test: {X_test.shape}")
+
