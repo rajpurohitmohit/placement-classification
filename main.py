@@ -66,3 +66,37 @@ X_test_scaled = scaler.transform(X_test)
 
 print(f"Shapes post-splitting - X_train: {X_train.shape}, X_test: {X_test.shape}")
 
+# Model Selection & Testing
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score
+
+# Initialize the models for comparison
+models = {
+    'Logistic Regression': LogisticRegression(),
+    'Random Forest': RandomForestClassifier(random_state=42),
+    'Support Vector Machine': SVC()
+}
+
+# Train and test each model
+print("\n--- Model Evaluation ---")
+best_model_name = ""
+best_model = None
+best_acc = 0
+
+for name, model in models.items():
+    # Train
+    model.fit(X_train_scaled, y_train)
+    # Predict
+    y_pred = model.predict(X_test_scaled)
+    # Evaluate
+    acc = accuracy_score(y_test, y_pred)
+    print(f"{name} Accuracy: {acc:.4f}")
+    
+    if acc > best_acc:
+        best_acc = acc
+        best_model_name = name
+        best_model = model
+
+print(f"\nBest Performing Model: {best_model_name} with Accuracy of {best_acc:.4f}")
